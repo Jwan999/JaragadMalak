@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="tailwindcss.css">
+</head>
+<body class="bg-gray-200">
+
+
+<div id="app">
+
+    <div class="flex justify-center">
+
+        <div class="w-4/12 mt-10">
+
+            <input @keyup.enter="addToCurrent" v-model="task" type="text" class="w-full px-3 py-2 rounded-md"
+                   placeholder="Write down your tasks...">
+
+            <div>
+                <h1 v-if="currentTasks.length > 0" class="text-xl text-blue-500 my-3 ">
+                    Current tasks
+                </h1>
+                <div v-for="(task,index) in currentTasks"
+                     class="flex justify-between bg-white rounded-md border border-blue-200 px-3 py-2 my-2">
+                    <div>
+                        {{task}}
+                    </div>
+                    <div>
+                        <button @click="moveToLater(task)" class="text-green-500 text-sm mx-1 hover:bg-green-500 hover:text-white p-1 rounded-md">Later</button>
+                        <button @click="deleteCurrent(index)" class="text-red-500 text-sm mx-1 hover:bg-red-500 hover:text-white p-1 rounded-md">Delete</button>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h1 v-if="laterTasks.length > 0" class="text-xl text-green-500 my-3">
+                    Later tasks
+                </h1>
+                <div v-for="(task,index) in laterTasks"
+                     class="flex justify-between bg-white rounded-md border border-green-200 px-3 py-2 my-2">
+                    <div>
+                        {{task}}
+                    </div>
+                    <div>
+                        <button @click="movetocurrent(task)"  class="text-blue-500 text-sm mx-1 hover:bg-blue-400 hover:text-white rounded-md p-1">Current</button>
+                        <button @click="deletelater(index)" class="text-red-500 text-sm mx-1 hover:bg-red-500 hover:text-white rounded-md p-1">Delete</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+    let vue = new Vue({
+        el: '#app',
+        data: {
+            task: '',
+            currentTasks: [],
+            laterTasks: []
+        },
+        methods: {
+            addToCurrent() {
+                this.currentTasks.push(this.task)
+            },
+            deleteCurrent(index) {
+                this.currentTasks.splice(index, 1)
+            },
+            moveToLater(task) {
+                this.laterTasks.push(task)
+                let index = this.currentTasks.indexOf(task)
+                this.currentTasks.splice(index, 1)
+            },
+
+           movetocurrent(task){
+               this.currentTasks.push(task)
+               let x =this.laterTasks.indexOf(task)
+               this.laterTasks.splice(x, 1 )
+
+           },
+
+           deletelater(index){
+               this.laterTasks.splice(index,1)
+           }
+
+
+        }
+
+
+
+    })
+</script>
+
+
+</body>
+</html>
